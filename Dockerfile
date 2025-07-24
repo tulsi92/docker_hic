@@ -7,6 +7,9 @@ RUN micromamba install -y -n base -f /tmp/env.yaml && \
     micromamba clean --all --yes
 
 # Install pairsamtools
+RUN pip install git+https://github.com/mirnylab/pairsamtools
+
+
 # Change user to root to make root directory and chown it to mamba user. Mamba env is not active here
 USER root
 RUN apt-get update && \
