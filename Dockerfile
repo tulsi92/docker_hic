@@ -11,3 +11,4 @@ RUN micromamba install -y -n base -f /tmp/env.yaml && \
 
 # Below is necessary for the env to work with shell sessions
 # ENTRYPOINT [pairsamtools]
+ENV PATH "$MAMBA_ROOT_PREFIX/bin:$PATH"
