@@ -16,22 +16,31 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
-      -
-        name: Login to Docker Hub
+      
+      - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
           username: tulsipatel
           password: ${{ secrets.DOCKER_PASSWORD }}
-      -
-        name: Extract metadata (tags, labels) for Docker
+      
+      - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: tulsipatel/aimagma
-      -
-        name: Build and push
+          images: tulsipatel/hic
+          tags: |
+            type=ref,event=tag
+            type=raw,value=latest
+
+      - name: Set up Docker buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
+          context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
